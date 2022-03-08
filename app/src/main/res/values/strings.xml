@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Konachan</string>
+    <string name="title_activity_photo_view">PhotoViewActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="setting">设置</string>
+    <string name="page">页码</string>
+    <string name="keyword">关键字</string>
+    <string name="tip">关键字为全小写，各个单词用_分隔，多个关键字用空格分隔\n例：hatsune_miku aqua_hair</string>
+    <string name="search">搜索</string>
+    <string name="photo_size">图片大小：</string>
+    <string name="tag">Tag：</string>
+    <string name="download">下载</string>
+    <string name="date">上传日期：</string>
+    <string name="not_found">什么都没有找到</string>
+    <string name="error_retry">工口发生，请点击重试</string>
+    <string name="loading">少女思考中...</string>
+    <string name="interest">该APP兴趣使然制作，请勿用作商业用途。</string>
+    <string name="favorite">收藏</string>
+</resources>
