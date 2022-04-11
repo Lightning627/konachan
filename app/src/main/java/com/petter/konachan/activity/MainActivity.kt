@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -116,15 +118,41 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        if (!checkWifiStatus()) {
+            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+            refreshLayout.finishRefresh()
+            return
+        }
         refresh = true
         page = 1
         mViewModel.post(page, 14, tags)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
+        if (!checkWifiStatus()) {
+            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+            refreshLayout.finishLoadMore()
+            return
+        }
         loadmore = true
         page++
         mViewModel.post(page, 14, tags)
+    }
+
+    private fun checkWifiStatus(): Boolean {
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        if (!wifiManager.isWifiEnabled) {
+            return false
+        }
+        return when (wifiManager.wifiState) {
+            WifiManager.WIFI_STATE_ENABLED -> {
+                val connectivityManager =
+                    applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork = connectivityManager.activeNetwork
+                activeNetwork != null
+            }
+            else -> false
+        }
     }
 
     private val tagsPost: Observer<MutableList<String>> = Observer {
@@ -251,6 +279,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     }
 
     override fun reload() {
+        if (!checkWifiStatus()) {
+            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+            return
+        }
         loadService.showCallback(LoadCallback::class.java)
         refresh = true
         mViewModel.post(page, 14, tags)
