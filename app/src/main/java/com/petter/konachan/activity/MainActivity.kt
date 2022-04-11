@@ -1,7 +1,6 @@
 package com.petter.konachan.activity
 
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -38,14 +37,12 @@ import com.petter.konachan.base.load.LoadCallback
 import com.petter.konachan.databinding.ActivityMainBinding
 import com.petter.konachan.response.BaseResponse
 import com.petter.konachan.response.Image
-import com.petter.konachan.response.KonachanTagResponse
 import com.petter.konachan.util.ScreenUtil
 import com.petter.konachan.viewmodel.MainViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-import java.util.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefreshLoadMoreListener,
     ItemOnClickListener, View.OnClickListener, TextWatcher {

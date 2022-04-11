@@ -19,6 +19,7 @@ import com.petter.konachan.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,7 +61,9 @@ class DownloadService : Service() {
             .into(object: CustomTarget<File>(){
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     val target = File(FileUtil.newFilePath(this@DownloadService), name)
-                    FileUtil.paste(resource, target)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        FileUtil.paste(resource, target)
+                    }
                     list.remove(imageResponse.file_url)
                     if (list.isEmpty()) stopSelf()
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
