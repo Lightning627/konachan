@@ -16,6 +16,7 @@ import com.petter.konachan.network.KonachanApi
 import com.petter.konachan.network.RetrofitManager
 import com.petter.konachan.response.ImageEntity
 import com.petter.konachan.util.FileUtil
+import com.petter.konachan.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -55,6 +56,7 @@ class DownloadService : Service() {
             imageResponse.file_url.lastIndexOf("/")
         )
         list.add(imageResponse.file_url)
+        NotificationUtil.startDownload(applicationContext, imageResponse.id)
         Glide.with(this)
             .asFile()
             .load(imageResponse.file_url)
@@ -69,12 +71,19 @@ class DownloadService : Service() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                         FileUtil.refreshPhotoAlbum(applicationContext, target.path)
                     }
+                    NotificationUtil.finishDownload(applicationContext, imageResponse.id)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    Log.e(TAG, "onFail")
+                    list.remove(imageResponse.file_url)
+                    NotificationUtil.errorDownload(applicationContext, imageResponse.id)
+                    if (list.isEmpty()) stopSelf()
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
-                    Log.e(TAG, "onFail")
-                    list.remove(imageResponse.file_url)
-                    if (list.isEmpty()) stopSelf()
+
                 }
             })
 //        val response = RetrofitManager.getRetrofit().create(KonachanApi::class.java)
