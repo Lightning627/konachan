@@ -14,6 +14,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.petter.konachan.network.DownloadListener
 import com.petter.konachan.network.KonachanApi
 import com.petter.konachan.network.RetrofitManager
+import com.petter.konachan.response.Image
 import com.petter.konachan.response.ImageEntity
 import com.petter.konachan.util.FileUtil
 import com.petter.konachan.util.NotificationUtil
@@ -51,85 +52,56 @@ class DownloadService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i(TAG, "onStartCommand: 服务添加下载任务")
-        val imageResponse = intent?.getSerializableExtra("data") as ImageEntity
-        val name = imageResponse.file_url.substring(
-            imageResponse.file_url.lastIndexOf("/")
+        val imageResponse = intent?.getSerializableExtra("data") as Image
+        val name = imageResponse.fileUrl.substring(
+            imageResponse.fileUrl.lastIndexOf("/")
         )
-        list.add(imageResponse.file_url)
-        NotificationUtil.startDownload(applicationContext, imageResponse.id)
-        Glide.with(this)
-            .asFile()
-            .load(imageResponse.file_url)
-            .into(object: CustomTarget<File>(){
-                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                    val target = File(FileUtil.newFilePath(this@DownloadService), name)
-                    GlobalScope.launch(Dispatchers.IO) {
-                        FileUtil.paste(resource, target)
-                    }
-                    list.remove(imageResponse.file_url)
-                    if (list.isEmpty()) stopSelf()
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                        FileUtil.refreshPhotoAlbum(applicationContext, target.path)
-                    }
-                    NotificationUtil.finishDownload(applicationContext, imageResponse.id)
-                }
+        val response = RetrofitManager.getRetrofit().create(KonachanApi::class.java)
+            .downloadFile(imageResponse.fileUrl)
+        response.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                GlobalScope.launch(Dispatchers.IO) {
+                    FileUtil.writeResponseToDisk(applicationContext,
+                        name,
+                        FileUtil.newFilePath(applicationContext),
+                        response,
+                        object : DownloadListener {
+                            private val TAG = "DownloadListener"
+                            override fun onStart() {
+                                Log.i(TAG, "onStart: ")
+                                list.add(imageResponse.fileUrl)
+                                NotificationUtil.startDownload(applicationContext, imageResponse.id)
+                            }
 
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    Log.e(TAG, "onFail")
-                    list.remove(imageResponse.file_url)
-                    NotificationUtil.errorDownload(applicationContext, imageResponse.id)
-                    if (list.isEmpty()) stopSelf()
-                }
+                            override fun onProgress(progress: Int) {
+                                Log.i(TAG, "onProgress: $progress")
+                            }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
+                            override fun onFinish(path: String) {
+                                Log.i(TAG, "onFinish: $path")
+                                list.remove(imageResponse.fileUrl)
+                                if (list.isEmpty()) stopSelf()
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                                    FileUtil.refreshPhotoAlbum(applicationContext, path)
+                                }
+                                NotificationUtil.finishDownload(applicationContext, imageResponse.id)
+                            }
 
-                }
-            })
-//        val response = RetrofitManager.getRetrofit().create(KonachanApi::class.java)
-//            .downloadFile(imageResponse.file_url)
-//        response.enqueue(object : Callback<ResponseBody> {
-//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                GlobalScope.launch(Dispatchers.IO) {
-//                    FileUtil.writeResponseToDisk(applicationContext,
-//                        name,
-//                        FileUtil.newFilePath(applicationContext),
-//                        response,
-//                        object : DownloadListener {
-//                            private val TAG = "DownloadListener"
-//                            override fun onStart() {
-//                                Log.i(TAG, "onStart: ")
-//                                list.add(imageResponse.file_url)
-//                            }
-//
-//                            override fun onProgress(progress: Int) {
-//                                Log.i(TAG, "onProgress: $progress")
-//                            }
-//
-//                            override fun onFinish(path: String) {
-//                                Log.i(TAG, "onFinish: $path")
-////                                FileUtil.refreshAlbum(applicationContext, name, FileUtil.newFilePath(applicationContext))
-//                                list.remove(imageResponse.file_url)
-//                                if (list.isEmpty()) stopSelf()
-//                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-//                                    FileUtil.refreshPhotoAlbum(applicationContext, path)
-//                                }
-//                            }
-//
-//                            override fun onFail(errorInfo: String) {
-//                                Log.i(TAG, "onFail: $errorInfo")
-//                                list.remove(imageResponse.file_url)
-//                                if (list.isEmpty()) stopSelf()
+                            override fun onFail(errorInfo: String) {
+                                Log.i(TAG, "onFail: $errorInfo")
+                                list.remove(imageResponse.fileUrl)
+                                if (list.isEmpty()) stopSelf()
+                                NotificationUtil.errorDownload(applicationContext, imageResponse.id)
 //                                Toast.makeText(this@DownloadService, "下载失败：$errorInfo", Toast.LENGTH_SHORT).show()
-//                            }
-//                        })
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                if (list.isEmpty()) stopSelf()
-//            }
-//        })
+                            }
+                        })
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                if (list.isEmpty()) stopSelf()
+            }
+        })
 
         return super.onStartCommand(intent, flags, startId)
     }

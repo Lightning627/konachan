@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.core.app.NotificationCompat
 import com.petter.konachan.R
 
 /**
@@ -29,16 +30,16 @@ object NotificationUtil {
 
     private fun showNotification(context: Context, id: Int, content: String) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notification = Notification.Builder(context, CHANNEL_ID)
-                .setContentTitle(content)
-                .setAutoCancel(false)
-                .build()
-            notificationManager.notify(id, notification)
-        }else{
-            val notification = Notification(R.mipmap.ic_launcher, content, System.currentTimeMillis())
-            notificationManager.notify(id, notification)
-        }
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentTitle(content)
+            .setAutoCancel(true)
+            .setContentIntent(null)
+            .setSmallIcon(R.drawable.ic_cloud_download)
+            .setOnlyAlertOnce(true)
+            .setWhen(System.currentTimeMillis())
+            .setCategory(NotificationCompat.CATEGORY_EVENT)
+            .build()
+        notificationManager.notify(id, notification)
     }
 
 }
