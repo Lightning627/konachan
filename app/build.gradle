@@ -11,8 +11,8 @@ android {
         applicationId "com.petter.konachan"
         minSdk 23
         targetSdk 32
-        versionCode 8
-        versionName "1.62"
+        versionCode 9
+        versionName "1.63"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions{
