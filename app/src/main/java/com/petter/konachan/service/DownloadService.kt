@@ -2,31 +2,22 @@ package com.petter.konachan.service
 
 import android.app.Service
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.petter.konachan.network.DownloadListener
 import com.petter.konachan.network.KonachanApi
 import com.petter.konachan.network.RetrofitManager
 import com.petter.konachan.response.Image
-import com.petter.konachan.response.ImageEntity
 import com.petter.konachan.util.FileUtil
 import com.petter.konachan.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 /**
  * @anthor: EDZ
