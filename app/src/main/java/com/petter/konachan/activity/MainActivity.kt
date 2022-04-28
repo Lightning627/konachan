@@ -88,42 +88,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         mViewModel.imageLiveData.observe(this, posted)
         mViewModel.tagsLiveData.observe(this, tagsPost)
         initView()
+        tags = intent.getStringExtra("tag")
         mActivityBinding.refreshLayout.autoRefresh(1000)
 
-//        val response = RetrofitManager.getRetrofit().create(KonachanApi::class.java)
-//            .downloadFile("https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=https%3A%2F%2Fgimg2.baidu.com%2Fimage_search%2Fsrc%3Dhttp%253A%252F%252Fpic.jj20.com%252Fup%252Fallimg%252F911%252F050916125K7%252F160509125K7-11.jpg%26refer%3Dhttp%253A%252F%252Fpic.jj20.com%26app%3D2002%26size%3Df9999%2C10000%26q%3Da80%26n%3D0%26g%3D0n%26fmt%3Dauto%3Fsec%3D1652944027%26t%3D037229fdae1609e5d16501d7bbfffa9c&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D1935280827%2C2072276192%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D500%26h%3D281")
-//        response.enqueue(object : Callback<ResponseBody> {
-//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                GlobalScope.launch(Dispatchers.IO) {
-//                    FileUtil.writeResponseToDisk(applicationContext,
-//                        "new.jpg",
-//                        FileUtil.newFilePath(applicationContext),
-//                        response,
-//                        object : DownloadListener {
-//                            private val TAG = "DownloadListener"
-//                            override fun onStart() {
-//                                Log.i(TAG, "onStart: ")
-//                            }
-//
-//                            override fun onProgress(progress: Int) {
-//                                Log.i(TAG, "onProgress: $progress")
-//                            }
-//
-//                            override fun onFinish(path: String) {
-//                                Log.i(TAG, "onFinish: $path")
-////                                FileUtil.refreshPhotoAlbum(applicationContext, path)
-//                            }
-//
-//                            override fun onFail(errorInfo: String) {
-//                                Log.i(TAG, "onFail: $errorInfo")
-//                            }
-//                        })
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//            }
-//        })
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent == null) return
+        tags = intent.getStringExtra("tag")
+        mActivityBinding.refreshLayout.autoRefresh(1000)
     }
 
     private fun initView() {
@@ -281,24 +255,24 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         pagerForActivityResult.launch(intent)
     }
 
-    private var exit = false
+//    private var exit = false
+//
+//    private val handler = object : Handler(Looper.getMainLooper()) {
+//        override fun handleMessage(msg: Message) {
+//            super.handleMessage(msg)
+//            exit = false
+//        }
+//    }
 
-    private val handler = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            exit = false
-        }
-    }
-
-    override fun onBackPressed() {
-        if (exit) {
-            super.onBackPressed()
-        } else {
-            exit = true
-            handler.sendEmptyMessageDelayed(0, 1000)
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    override fun onBackPressed() {
+//        if (exit) {
+//            super.onBackPressed()
+//        } else {
+//            exit = true
+//            handler.sendEmptyMessageDelayed(0, 1000)
+//            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     override fun onClick(v: View) {
         when (v.id) {
