@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuItemCompat.getActionView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.petter.konachan.R
 import com.petter.konachan.adapter.GuideAdapter
@@ -19,6 +23,7 @@ import com.petter.konachan.viewmodel.GuideViewModel
 class GuideActivity : BaseActivity<ActivityGuideBinding, GuideViewModel>(), ItemOnClickListener {
 
     private var exit = false
+    private lateinit var searchView: SearchView
 
     private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -49,12 +54,51 @@ class GuideActivity : BaseActivity<ActivityGuideBinding, GuideViewModel>(), Item
         }
     }
 
-    override fun isSetLoadSir(): Boolean {
-        return false
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        val findItem = menu.findItem(R.id.searchView)
+        searchView = findItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val intent = Intent(this@GuideActivity, MainActivity::class.java)
+                intent.putExtra("tag", searchView.query.toString())
+                startActivity(intent)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.setting -> startActivity(Intent(this, SettingActivity::class.java))
+            R.id.favorite -> startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_guide
+    }
+
+//    private val registerForActivityResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            if (it.resultCode == Activity.RESULT_OK) {
+//                adapter.data.clear()
+//                adapter.notifyDataSetChanged()
+//                page = 1
+//                tags = null
+//                mActivityBinding.refreshLayout.autoRefresh()
+//            }
+//        }
+
+    override fun isSetLoadSir(): Boolean {
+        return false
     }
 
     override fun loadSirView(): Any {

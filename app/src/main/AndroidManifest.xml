@@ -19,13 +19,21 @@
         android:theme="@style/MyTheme">
         <activity
             android:name=".activity.GuideActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:screenOrientation="unspecified">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.PagerActivity"
             android:exported="true" />
         <activity
             android:name=".activity.FavoriteActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="unspecified" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -46,15 +54,13 @@
             android:theme="@style/MyTheme.Fullscreen" />
         <activity
             android:name=".activity.SettingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false"
+            android:screenOrientation="unspecified">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

@@ -31,7 +31,7 @@ object RetrofitManager {
     private fun getClient(): OkHttpClient {
         return OkHttpClient().newBuilder()
             .readTimeout(10L, TimeUnit.SECONDS) //设置读取超时时间
-            .connectTimeout(15L, TimeUnit.SECONDS) //设置请求超时时间
+            .connectTimeout(10L, TimeUnit.SECONDS) //设置请求超时时间
             .writeTimeout(10L, TimeUnit.SECONDS) //设置写入超时时间
 //            .addInterceptor(LogInterceptor()) //添加拦截器
             .retryOnConnectionFailure(true) //设置出现错误进行重新连接。

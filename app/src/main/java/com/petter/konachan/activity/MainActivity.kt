@@ -66,16 +66,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     private var refresh = false
     private var loadmore = false
 
-    private val registerForActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                adapter.data.clear()
-                adapter.notifyDataSetChanged()
-                page = 1
-                tags = null
-                mActivityBinding.refreshLayout.autoRefresh()
-            }
-        }
     private val pagerForActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             page = it.data?.getIntExtra("page", 1)!!
@@ -89,6 +79,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         mViewModel.tagsLiveData.observe(this, tagsPost)
         initView()
         tags = intent.getStringExtra("tag")
+        if (tags != null) {
+            Log.i(TAG, "onCreate: $tags")
+            mActivityBinding.etTag.text = Editable.Factory.getInstance().newEditable(tags)
+        }
         mActivityBinding.refreshLayout.autoRefresh(1000)
 
     }
@@ -101,6 +95,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     }
 
     private fun initView() {
+        mActivityBinding.toolbar.setNavigationOnClickListener { onBackPressed() }
         tagAdapter = DropListAdapter(this, mutableListOf())
         mActivityBinding.etTag.setAdapter(tagAdapter)
         mActivityBinding.etTag.addTextChangedListener(this)
@@ -220,25 +215,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         return R.layout.activity_main
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.setting -> registerForActivityResult.launch(
-                Intent(
-                    this,
-                    SettingActivity::class.java
-                )
-            )
-            R.id.favorite -> startActivity(Intent(this, FavoriteActivity::class.java))
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onItemClick(position: Int, view: View) {
         //带动画的跳转
 //        val intent = Intent(this, PhotoViewActivity::class.java)
@@ -254,25 +230,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         intent.putExtra("tags", tags)
         pagerForActivityResult.launch(intent)
     }
-
-//    private var exit = false
-//
-//    private val handler = object : Handler(Looper.getMainLooper()) {
-//        override fun handleMessage(msg: Message) {
-//            super.handleMessage(msg)
-//            exit = false
-//        }
-//    }
-
-//    override fun onBackPressed() {
-//        if (exit) {
-//            super.onBackPressed()
-//        } else {
-//            exit = true
-//            handler.sendEmptyMessageDelayed(0, 1000)
-//            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     override fun onClick(v: View) {
         when (v.id) {
