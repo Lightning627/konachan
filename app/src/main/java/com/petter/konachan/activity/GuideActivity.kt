@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuItemCompat.getActionView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.petter.konachan.R
 import com.petter.konachan.adapter.GuideAdapter
@@ -85,17 +84,6 @@ class GuideActivity : BaseActivity<ActivityGuideBinding, GuideViewModel>(), Item
     override fun getLayoutId(): Int {
         return R.layout.activity_guide
     }
-
-//    private val registerForActivityResult =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-//            if (it.resultCode == Activity.RESULT_OK) {
-//                adapter.data.clear()
-//                adapter.notifyDataSetChanged()
-//                page = 1
-//                tags = null
-//                mActivityBinding.refreshLayout.autoRefresh()
-//            }
-//        }
 
     override fun isSetLoadSir(): Boolean {
         return false

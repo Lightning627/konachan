@@ -1,18 +1,13 @@
 package com.petter.konachan.activity
 
-import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.*
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -34,27 +29,14 @@ import com.petter.konachan.base.load.EmptyCallback
 import com.petter.konachan.base.load.ErrorCallback
 import com.petter.konachan.base.load.LoadCallback
 import com.petter.konachan.databinding.ActivityMainBinding
-import com.petter.konachan.network.DownloadListener
-import com.petter.konachan.network.KonachanApi
-import com.petter.konachan.network.RetrofitManager
 import com.petter.konachan.response.BaseResponse
 import com.petter.konachan.response.Image
-import com.petter.konachan.util.FileUtil
-import com.petter.konachan.util.NotificationUtil
 import com.petter.konachan.util.ScreenUtil
 import com.petter.konachan.viewmodel.MainViewModel
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.File
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefreshLoadMoreListener,
     ItemOnClickListener, View.OnClickListener, TextWatcher {

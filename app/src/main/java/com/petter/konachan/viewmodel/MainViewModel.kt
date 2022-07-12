@@ -8,7 +8,6 @@ import com.petter.konachan.network.repository.MainRepository
 import com.petter.konachan.network.repository.TagRepository
 import com.petter.konachan.response.BaseResponse
 import com.petter.konachan.response.Image
-import com.petter.konachan.response.KonachanTagResponse
 import java.lang.NumberFormatException
 
 /**
@@ -52,11 +51,11 @@ class MainViewModel : BaseViewModel() {
     }
 
     fun queryTag(name: String) {
-        tagRepository.queryTag(name).observe(mLifecycleOwner, {
+        tagRepository.queryTag(name).observe(mLifecycleOwner) {
             if (it.success) {
                 tagsLiveData.value = it.data
             }
-        })
+        }
     }
 
 }
