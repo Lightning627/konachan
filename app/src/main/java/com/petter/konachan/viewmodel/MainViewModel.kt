@@ -38,7 +38,7 @@ class MainViewModel : BaseViewModel() {
         return if (tag != null && tag.isNotEmpty()){
             imageDao.queryByTag(tag).toMutableList()
         }else{
-            imageDao.query("DESC").toMutableList()
+            imageDao.query("createAt").toMutableList()
         }
     }
 

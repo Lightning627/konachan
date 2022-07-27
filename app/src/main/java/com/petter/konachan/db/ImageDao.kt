@@ -15,7 +15,7 @@ import com.petter.konachan.response.ImageEntity
 @Dao
 interface ImageDao {
 
-    @Query("SELECT * FROM Image ORDER BY :order")
+    @Query("SELECT * FROM Image ORDER BY :order DESC")
     fun query(order: String): List<Image>
 
     @Query("SELECT * FROM Image WHERE tags LIKE '%' || :tag || '%'")
