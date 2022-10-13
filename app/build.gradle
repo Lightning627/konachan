@@ -7,7 +7,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('D:\\Code\\Android\\konachan\\app\\keystore.jks')
+            storeFile file('E:\\project_android\\konachan\\app\\keystore.jks')
             storePassword '123456'
             keyAlias 'key0'
             keyPassword '123456'

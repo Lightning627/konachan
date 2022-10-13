@@ -24,7 +24,7 @@ interface KonachanApi {
     fun post(@Url url:String, @QueryMap query: MutableMap<String, Any>): Single<MutableList<ImageEntity>>
 
     @GET
-    fun postGelbooru(@Url url:String, @QueryMap query: MutableMap<String, Any>): Single<MutableList<GelbooruImageResponse>>
+    fun postGelbooru(@Url url:String, @QueryMap query: MutableMap<String, Any>): Single<GelbooruImageResponse>
 
     @GET
     fun tags(@Url url:String, @QueryMap query: MutableMap<String, Any>): Observable<MutableList<KonachanTagResponse>>

@@ -34,19 +34,19 @@ class MainRepository : BaseRepository() {
         val apiType = MyApplication.getApiType()
         if (apiType == UrlEnum.GELBOORU.code) {
             request(RetrofitManager.getRetrofit().create(KonachanApi::class.java)
-                .postGelbooru(getPostUrl(), map), object: Function<MutableList<GelbooruImageResponse>, SingleSource<MutableList<Image>>>{
-                override fun apply(t: MutableList<GelbooruImageResponse>): SingleSource<MutableList<Image>> {
+                .postGelbooru(getPostUrl(), map), object: Function<GelbooruImageResponse, SingleSource<MutableList<Image>>>{
+                override fun apply(t: GelbooruImageResponse): SingleSource<MutableList<Image>> {
                     if (t != null) {
                         val mutableListOf = mutableListOf<Image>()
                         //Thu Nov 18 20:48:09 -0600 2021
                         val simpleDateFormat = SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.US)
-                        for (gelbooruImageResponse in t) {
+                        for (gelbooruImageResponse in t.post) {
                             mutableListOf.add(
                                 Image(
                                     gelbooruImageResponse.id,
                                     gelbooruImageResponse.file_url,
                                     gelbooruImageResponse.tags,
-                                    gelbooruImageResponse.file_url,
+                                    gelbooruImageResponse.preview_url,
                                     gelbooruImageResponse.file_url,
                                     gelbooruImageResponse.preview_height,
                                     gelbooruImageResponse.preview_width,
