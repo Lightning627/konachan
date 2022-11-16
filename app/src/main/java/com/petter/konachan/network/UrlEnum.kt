@@ -7,8 +7,8 @@ package com.petter.konachan.network
  */
 enum class UrlEnum(val code: Int, val baseUrl: String, val post: String, val tags: String) {
 
-    KONACHAN_CHILDREN(1, "https://konachan.net/", "post.json", "tag.json"),
-    KONACHAN_MAN(2, "https://konachan.com/", "post.json", "tag.json"),
+    KONACHAN_CHILDREN(1, "http://konachan.net/", "post.json", "tag.json"),
+    KONACHAN_MAN(2, "http://konachan.com/", "post.json", "tag.json"),
     GELBOORU(
         3,
         "https://gelbooru.com/",

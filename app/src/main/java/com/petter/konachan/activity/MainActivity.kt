@@ -131,6 +131,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
         }
         loadmore = true
         page++
+        mActivityBinding.etPage.text = Editable.Factory.getInstance().newEditable("$page")
         mViewModel.post(page, 14, tags)
     }
 
