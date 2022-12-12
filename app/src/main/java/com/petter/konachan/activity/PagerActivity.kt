@@ -92,10 +92,6 @@ class PagerActivity : BaseActivity<ActivityPagerBinding, MainViewModel>(), Pager
 
     }
 
-    private fun loadMore() {
-
-    }
-
     override fun onLongClick(position: Int) {
         if (!::photoDetailBottomMenu.isInitialized) {
             photoDetailBottomMenu = PhotoDetailBottomMenu(this, pagerAdapter.data[position])

@@ -1,6 +1,7 @@
 package com.petter.konachan.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener
 import com.github.chrisbanes.photoview.OnPhotoTapListener
 import com.github.chrisbanes.photoview.PhotoView
 import com.petter.konachan.R
+import com.petter.konachan.activity.VideoActivity
 import com.petter.konachan.base.load.ErrorCallback
 import com.petter.konachan.listener.PagerPhotoClickListener
 import com.petter.konachan.response.Image
@@ -39,7 +41,13 @@ class PagerAdapter(private val context: Context, var data: MutableList<Image>) :
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val image = data[position]
-        loadPhoto(image.image, holder.photoView)
+        if (image.image.endsWith("mp4") || image.tags.contains("video")) {
+            loadPhoto(image.preview, holder.photoView)
+            holder.ivPlayButton.visibility = View.VISIBLE
+        }else{
+            loadPhoto(image.image, holder.photoView)
+            holder.ivPlayButton.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -58,6 +66,9 @@ class PagerAdapter(private val context: Context, var data: MutableList<Image>) :
         val photoView: PhotoView by lazy {
             view.findViewById(R.id.photoView)
         }
+        val ivPlayButton: ImageView by lazy {
+            view.findViewById(R.id.ivPlayButton)
+        }
 
         init {
             photoView.setOnOutsidePhotoTapListener(this)
@@ -70,7 +81,12 @@ class PagerAdapter(private val context: Context, var data: MutableList<Image>) :
         }
 
         override fun onPhotoTap(view: ImageView?, x: Float, y: Float) {
-            pagerPhotoClickListener?.onPhotoTap()
+            val image = data[position]
+            if (image.image.endsWith("mp4")) {
+                VideoActivity.start(context, image.image)
+            }else{
+                pagerPhotoClickListener?.onPhotoTap()
+            }
         }
 
         override fun onLongClick(v: View?): Boolean {

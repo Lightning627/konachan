@@ -31,7 +31,8 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        API_TYPE = SPUtil.getInt(this, "api")
+        SPUtil.application = this
+        API_TYPE = SPUtil.getInt("api")
         if (API_TYPE == 0) {
             API_TYPE = UrlEnum.KONACHAN_CHILDREN.code
         }

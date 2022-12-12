@@ -12,23 +12,25 @@ object SPUtil {
 
     private val NAME = "konachan"
 
-    private fun getSP(context: Context): SharedPreferences {
-        return context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
+    var application: Context? = null
+
+    private fun getSP(): SharedPreferences {
+        return application!!.getSharedPreferences(NAME, Context.MODE_PRIVATE)
     }
 
-    fun saveString(context: Context, key: String, value: String) {
-        getSP(context).edit().putString(key, value).apply()
+    fun saveString(key: String, value: String) {
+        getSP().edit().putString(key, value).apply()
     }
 
-    fun getString(context: Context, key: String):String? {
-        return getSP(context).getString(key, "")
+    fun getString(key: String):String? {
+        return getSP().getString(key, "")
     }
 
-    fun getInt(context: Context, key:String): Int{
-        return getSP(context).getInt(key, 0)
+    fun getInt(key:String): Int{
+        return getSP().getInt(key, 0)
     }
 
-    fun saveInt(context: Context, key:String, value:Int) {
-        getSP(context).edit().putInt(key, value).apply()
+    fun saveInt(key:String, value:Int) {
+        getSP().edit().putInt(key, value).apply()
     }
 }

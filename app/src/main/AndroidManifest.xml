@@ -19,6 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
         <activity
+            android:name=".activity.VideoActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activity.WebActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.GuideActivity"
             android:exported="true"
             android:screenOrientation="unspecified">
@@ -60,9 +74,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
 
         <service
             android:name=".service.DownloadService"

@@ -17,4 +17,5 @@
     <string name="loading">少女思考中...</string>
     <string name="interest">该APP兴趣使然制作，请勿用作商业用途。</string>
     <string name="favorite">收藏</string>
+    <string name="player_time">00:00 / 00:00</string>
 </resources>

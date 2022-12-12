@@ -35,6 +35,8 @@ class GuideActivity : BaseActivity<ActivityGuideBinding, GuideViewModel>(), Item
         super.onCreate(savedInstanceState)
         mActivityBinding.recyclerView.layoutManager = GridLayoutManager(this, 2)
         mActivityBinding.recyclerView.adapter = GuideAdapter(this, this)
+
+//        WebActivity.start(this, "http://konachan.net/")
     }
 
     override fun onItemClick(position: Int, view: View) {

@@ -3,6 +3,7 @@ package com.petter.konachan.activity
 import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -34,6 +35,7 @@ class PhotoViewActivity : BaseActivity<ActivityPhotoViewBinding, MainViewModel>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         imageEntity = intent.getSerializableExtra("data") as Image
+        Log.i(TAG, "onCreate: $imageEntity")
         loadPhoto()
         mActivityBinding.photoView.setOnOutsidePhotoTapListener(this)
         mActivityBinding.photoView.setOnPhotoTapListener(this)
@@ -42,6 +44,10 @@ class PhotoViewActivity : BaseActivity<ActivityPhotoViewBinding, MainViewModel>(
     }
 
     private fun loadPhoto() {
+        if (imageEntity.image.endsWith("mp4")) {
+            Toast.makeText(this, "这是视频，暂时无法展示", Toast.LENGTH_SHORT).show()
+            return
+        }
         Glide.with(this)
             .load(imageEntity.image)
             .thumbnail(

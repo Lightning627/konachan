@@ -60,9 +60,9 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompa
             .addCallback(EmptyCallback())
             .addCallback(ErrorCallback())
             .addCallback(LoadCallback())
-            .build().register(loadSirView(), Callback.OnReloadListener {
+            .build().register(loadSirView()) {
                 reload()
-            })
+            }
     }
 
     abstract fun isSetLoadSir(): Boolean

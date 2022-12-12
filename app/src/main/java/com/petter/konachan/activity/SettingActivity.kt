@@ -34,7 +34,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
         checkBoxes.add(mActivityBinding.rbHx)
         checkBoxes.add(mActivityBinding.rbCr)
         checkBoxes.add(mActivityBinding.rbGel)
-        when (SPUtil.getInt(this, "api")) {
+        when (SPUtil.getInt("api")) {
             UrlEnum.KONACHAN_MAN.code -> {
                 check(mActivityBinding.rbCr)
             }
@@ -87,7 +87,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
     }
 
     private fun setApi(code: Int) {
-        SPUtil.saveInt(this, "api", code)
+        SPUtil.saveInt("api", code)
         MyApplication.setApiType(code)
     }
 
