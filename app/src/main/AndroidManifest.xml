@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
         <activity
+            android:configChanges="orientation|screenSize"
             android:name=".activity.VideoActivity"
             android:exported="false">
             <meta-data
