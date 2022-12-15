@@ -7,6 +7,6 @@ import java.io.Serializable
  * @time: 2021/11/18 17:01
  * @description:
  */
-class GelbooruImageResponse(var post : MutableList<GelbooruImageListVO>): Serializable {
+class GelbooruImageResponse(var post : MutableList<GelbooruImageListVO>?): Serializable {
 
 }

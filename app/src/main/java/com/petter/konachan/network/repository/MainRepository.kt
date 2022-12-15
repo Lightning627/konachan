@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -40,7 +41,10 @@ class MainRepository : BaseRepository() {
                         val mutableListOf = mutableListOf<Image>()
                         //Thu Nov 18 20:48:09 -0600 2021
                         val simpleDateFormat = SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy", Locale.US)
-                        for (gelbooruImageResponse in t.post) {
+                        if (t.post == null) {
+                            t.post = mutableListOf()
+                        }
+                        for (gelbooruImageResponse in t.post!!) {
                             mutableListOf.add(
                                 Image(
                                     gelbooruImageResponse.id,
