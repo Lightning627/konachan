@@ -2,7 +2,8 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
 //        google()
-        mavenCentral()
+//        mavenCentral()
+        maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url "https://jitpack.io" }
 //        maven { url 'https://maven.google.com' }
 //        maven { url 'https://maven.aliyun.com/repositoy/jcenter' }

@@ -113,22 +113,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        if (!checkWifiStatus()) {
-            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
-            refreshLayout.finishRefresh()
-            return
-        }
+//        if (!checkWifiStatus()) {
+//            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+//            refreshLayout.finishRefresh()
+//            return
+//        }
         refresh = true
         page = 1
         mViewModel.post(page, 14, tags)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
-        if (!checkWifiStatus()) {
-            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
-            refreshLayout.finishLoadMore()
-            return
-        }
+//        if (!checkWifiStatus()) {
+//            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+//            refreshLayout.finishLoadMore()
+//            return
+//        }
         loadmore = true
         page++
         mActivityBinding.etPage.text = Editable.Factory.getInstance().newEditable("$page")

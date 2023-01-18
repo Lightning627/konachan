@@ -89,4 +89,8 @@ dependencies {
     implementation  'com.scwang.smart:refresh-header-material:2.0.3'
     implementation  'com.scwang.smart:refresh-footer-classics:2.0.3'
 
+    //Player
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.7'
+    implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
 }

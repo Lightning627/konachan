@@ -20,6 +20,7 @@ import com.petter.konachan.databinding.ActivityVideoBinding
 import com.petter.konachan.response.Image
 import com.petter.konachan.util.DisplayUtil
 import com.petter.konachan.viewmodel.VideoViewModel
+import xyz.doikki.videocontroller.StandardVideoController
 
 class VideoActivity : BaseActivity<ActivityVideoBinding, VideoViewModel>() {
 
@@ -33,7 +34,7 @@ class VideoActivity : BaseActivity<ActivityVideoBinding, VideoViewModel>() {
         }
     }
 
-    lateinit var mediaController: MediaController
+//    lateinit var mediaController: MediaController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +44,19 @@ class VideoActivity : BaseActivity<ActivityVideoBinding, VideoViewModel>() {
 
     private fun initView() {
         val url = intent.getStringExtra("url")
-        mActivityBinding.videoView.setVideoPath(url)
-        mediaController = MediaController(this)
-        mActivityBinding.videoView.setMediaController(mediaController)
-        mActivityBinding.videoView.setOnPreparedListener {
-            mActivityBinding.progressBar.visibility = View.GONE
-        }
+//        mActivityBinding.videoView.setVideoPath(url)
+//        mediaController = MediaController(this)
+//        mActivityBinding.videoView.setMediaController(mediaController)
+//        mActivityBinding.videoView.setOnPreparedListener {
+//            mActivityBinding.progressBar.visibility = View.GONE
+//        }
+//        mActivityBinding.videoView.start()
+        mActivityBinding.videoView.setUrl(url)
+        val controller = StandardVideoController(this)
+        controller.addDefaultControlComponent("", false)
+        mActivityBinding.videoView.setVideoController(controller)
         mActivityBinding.videoView.start()
+
     }
 
     /**
@@ -87,9 +94,27 @@ class VideoActivity : BaseActivity<ActivityVideoBinding, VideoViewModel>() {
     }
 
     override fun onBackPressed() {
-        if (mediaController.isShowing) {
-            mediaController.hide()
+//        if (mediaController.isShowing) {
+//            mediaController.hide()
+//        }
+        if (!mActivityBinding.videoView.onBackPressed()) {
+            super.onBackPressed()
         }
-        super.onBackPressed()
     }
+
+    override fun onPause() {
+        super.onPause()
+        mActivityBinding.videoView.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mActivityBinding.videoView.resume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mActivityBinding.videoView.release()
+    }
+
 }

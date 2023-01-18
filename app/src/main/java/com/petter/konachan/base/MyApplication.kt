@@ -9,6 +9,9 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.petter.konachan.network.UrlEnum
 import com.petter.konachan.util.SPUtil
+import xyz.doikki.videoplayer.ijk.IjkPlayerFactory
+import xyz.doikki.videoplayer.player.VideoViewConfig
+import xyz.doikki.videoplayer.player.VideoViewManager
 
 /**
  * @anthor: EDZ
@@ -50,5 +53,16 @@ class MyApplication : Application() {
             glideBuilder.setDiskCache(InternalCacheDiskCacheFactory(this, "Glide_images", diskCacheSize.toLong()))
         }
         Glide.init(this, glideBuilder)
+
+        //初始化播放器
+        VideoViewManager.setConfig(
+            VideoViewConfig.newBuilder()
+            //使用使用IjkPlayer解码
+            .setPlayerFactory(IjkPlayerFactory.create())
+//            //使用ExoPlayer解码
+//            .setPlayerFactory(ExoMediaPlayerFactory.create())
+//            //使用MediaPlayer解码
+//            .setPlayerFactory(AndroidMediaPlayerFactory.create())
+            .build());
     }
 }
