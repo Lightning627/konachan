@@ -237,10 +237,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), OnRefre
     }
 
     override fun reload() {
-        if (!checkWifiStatus()) {
-            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
-            return
-        }
+//        if (!checkWifiStatus()) {
+//            Toast.makeText(this, "由于服务器限制，\n请先连接wifi食用该app", Toast.LENGTH_SHORT).show()
+//            return
+//        }
         loadService.showCallback(LoadCallback::class.java)
         refresh = true
         mViewModel.post(page, 14, tags)

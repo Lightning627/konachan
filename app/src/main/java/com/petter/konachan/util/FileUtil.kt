@@ -123,10 +123,13 @@ object FileUtil {
         downloadListener: DownloadListener
     ) {
         val type = when (name.substringAfterLast(".")) {
-            "jpg", "jpeg", "JPG", "JPEG" ->  "jpeg"
-            "png", "PNG" -> "png"
-            "bmp", "BMP" -> "bmp"
-            else -> "jpeg"
+            "jpg", "jpeg", "JPG", "JPEG" ->  "image/jpeg"
+            "png", "PNG" -> "image/png"
+            "bmp", "BMP" -> "image/bmp"
+            "mp4", "MP4", "mkv" -> "video/mp4"
+            "mkv" -> "video/mkv"
+            "avi" -> "video/avi"
+            else -> "image/jpeg"
         }
         downloadListener.onStart()
         val contentUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
@@ -136,7 +139,7 @@ object FileUtil {
         contentValues.put(MediaStore.Images.Media.DESCRIPTION, "")
         contentValues.put(MediaStore.Images.Media.IS_PRIVATE, 1)
         contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name)
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/${type}")
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, type)
         contentValues.put(MediaStore.Images.Media.TITLE, name)
         contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "DCIM/konachan")
         contentValues.put(MediaStore.Images.Media.DATE_ADDED, dateTaken)
