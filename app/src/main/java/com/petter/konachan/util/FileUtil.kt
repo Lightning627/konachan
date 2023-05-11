@@ -132,18 +132,33 @@ object FileUtil {
             else -> "image/jpeg"
         }
         downloadListener.onStart()
-        val contentUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+
         val contentValues = ContentValues()
         val dateTaken = System.currentTimeMillis()
-        contentValues.put(MediaStore.Images.Media.DATE_TAKEN, dateTaken)
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "")
-        contentValues.put(MediaStore.Images.Media.IS_PRIVATE, 1)
-        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name)
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, type)
-        contentValues.put(MediaStore.Images.Media.TITLE, name)
-        contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "DCIM/konachan")
-        contentValues.put(MediaStore.Images.Media.DATE_ADDED, dateTaken)
-        contentValues.put(MediaStore.Images.Media.DATE_MODIFIED, dateTaken)
+        var contentUri : Uri
+        if (type.startsWith("video")) {
+            contentValues.put(MediaStore.Video.Media.DATE_TAKEN, dateTaken)
+            contentValues.put(MediaStore.Video.Media.DESCRIPTION, "")
+            contentValues.put(MediaStore.Video.Media.IS_PRIVATE, 1)
+            contentValues.put(MediaStore.Video.Media.DISPLAY_NAME, name)
+            contentValues.put(MediaStore.Video.Media.MIME_TYPE, type)
+            contentValues.put(MediaStore.Video.Media.TITLE, name)
+            contentValues.put(MediaStore.Video.Media.RELATIVE_PATH, "DCIM/konachan")
+            contentValues.put(MediaStore.Video.Media.DATE_ADDED, dateTaken)
+            contentValues.put(MediaStore.Video.Media.DATE_MODIFIED, dateTaken)
+            contentUri = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        }else {
+            contentValues.put(MediaStore.Images.Media.DATE_TAKEN, dateTaken)
+            contentValues.put(MediaStore.Images.Media.DESCRIPTION, "")
+            contentValues.put(MediaStore.Images.Media.IS_PRIVATE, 1)
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, name)
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, type)
+            contentValues.put(MediaStore.Images.Media.TITLE, name)
+            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "DCIM/konachan")
+            contentValues.put(MediaStore.Images.Media.DATE_ADDED, dateTaken)
+            contentValues.put(MediaStore.Images.Media.DATE_MODIFIED, dateTaken)
+            contentUri = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        }
 
         val insert = context.contentResolver.insert(contentUri, contentValues)
         val openOutputStream = context.contentResolver.openOutputStream(insert!!)!!
