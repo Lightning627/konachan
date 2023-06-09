@@ -227,7 +227,7 @@ object FileUtil {
                     BigDecimal(currentLength).divide(BigDecimal(totalLength), 3, RoundingMode.HALF_UP)
                         .multiply(
                             BigDecimal.valueOf(100)
-                        ).toInt()
+                        ).toInt(), totalLength.toInt()
                 )
             }
             //下载完成，并返回保存的文件路径

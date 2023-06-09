@@ -7,7 +7,7 @@ package com.petter.konachan.network
  */
 interface DownloadListener {
     fun onStart()
-    fun onProgress(progress: Int)
+    fun onProgress(progress: Int, total: Int)
     fun onFinish(path: String)
     fun onFail(errorInfo: String)
 }

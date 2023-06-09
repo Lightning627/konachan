@@ -47,6 +47,7 @@ class DownloadService : Service() {
         val name = imageResponse.fileUrl.substring(
             imageResponse.fileUrl.lastIndexOf("/")
         )
+        NotificationUtil.startDownload(applicationContext, imageResponse.id)
         val response = RetrofitManager.getRetrofit().create(KonachanApi::class.java)
             .downloadFile(imageResponse.fileUrl)
         response.enqueue(object : Callback<ResponseBody> {
@@ -61,11 +62,11 @@ class DownloadService : Service() {
                             override fun onStart() {
                                 Log.i(TAG, "onStart: ")
                                 list.add(imageResponse.fileUrl)
-                                NotificationUtil.startDownload(applicationContext, imageResponse.id)
                             }
 
-                            override fun onProgress(progress: Int) {
+                            override fun onProgress(progress: Int, total: Int) {
                                 Log.i(TAG, "onProgress: $progress")
+                                NotificationUtil.progressDownload(applicationContext, imageResponse.id, progress, total)
                             }
 
                             override fun onFinish(path: String) {
@@ -83,13 +84,13 @@ class DownloadService : Service() {
                                 list.remove(imageResponse.fileUrl)
                                 if (list.isEmpty()) stopSelf()
                                 NotificationUtil.errorDownload(applicationContext, imageResponse.id)
-//                                Toast.makeText(this@DownloadService, "下载失败：$errorInfo", Toast.LENGTH_SHORT).show()
                             }
                         })
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                NotificationUtil.errorDownload(applicationContext, imageResponse.id)
                 if (list.isEmpty()) stopSelf()
             }
         })
