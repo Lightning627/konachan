@@ -13,8 +13,6 @@ import com.petter.konachan.network.DownloadListener
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.*
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 
 /**
@@ -224,10 +222,7 @@ object FileUtil {
                 currentLength += len.toLong()
                 //计算当前下载进度
                 downloadListener.onProgress(
-                    BigDecimal(currentLength).divide(BigDecimal(totalLength), 3, RoundingMode.HALF_UP)
-                        .multiply(
-                            BigDecimal.valueOf(100)
-                        ).toInt(), totalLength.toInt()
+                    currentLength.toInt(), totalLength.toInt()
                 )
             }
             //下载完成，并返回保存的文件路径
